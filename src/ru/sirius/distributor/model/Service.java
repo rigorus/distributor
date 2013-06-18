@@ -29,7 +29,7 @@ public class Service {
         try( Statement statement = connection.createStatement()){
             ResultSet set = statement.executeQuery(SQL);
             while(set.next()){
-                Classificator classification = new Classificator();
+                Group classification = new Group();
                 int id = set.getInt("classification_id");
                 int parentId = set.getInt("parent_id");
                 classification.setId(id);

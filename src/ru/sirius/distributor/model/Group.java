@@ -1,16 +1,11 @@
 package ru.sirius.distributor.model;
 
-import java.util.List;
-
-
-
-public class Classificator {
+public class Group {
 
     private int id;
     private int parentId; // для корня 0
     private String name;           
     private String comment;
-    private List<Integer> articles;
 
     public int getId() {
         return id;
@@ -44,14 +39,6 @@ public class Classificator {
         this.comment = comment;
     }
 
-    public List<Integer> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Integer> articles) {
-        this.articles = articles;
-    }
-    
     @Override
     public String toString(){
         return name;
@@ -60,4 +47,14 @@ public class Classificator {
     public boolean hasParent(){
         return parentId != 0;
     }        
+    
+    @Override
+    public Group clone(){
+        Group group = new Group();
+        group.id = this.id;
+        group.parentId = this.parentId;
+        group.name = this.name;
+        group.comment = this.comment;
+        return group;
+    }
 }

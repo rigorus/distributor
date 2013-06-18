@@ -18,7 +18,7 @@ public class TreeUtils {
         
         while(node.getParent() != null){
             Node parent = new Node(node.getParent());
-            parent.addChield(node);
+    //        parent.addChield(node);
             
         }
     }

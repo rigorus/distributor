@@ -9,17 +9,19 @@ import ru.sirius.distributor.db.NomenclatureHelper;
 
 public class ClassifierTreeTableModel extends AbstractTreeTableModel{
 
-    private Map<Integer,Classificator> groups;
+    private Map<Integer,Group> groups;
     private Map<Integer, Article> articles;
     private ClassifierNode rootNode;         
     private Map<Integer, ClassifierNode> nodes = new HashMap<>();
 
     public ClassifierTreeTableModel() {        
+        
+        super();
 
         this.articles = NomenclatureHelper.getARTICLES();
         this.groups = NomenclatureHelper.getGROUPS();        
 
-        for (Classificator group : groups.values()) {
+        for (Group group : groups.values()) {
             ClassifierNode node = new ClassifierNode(ClassifierNode.NodeType.GROUP, group.getId());
             nodes.put(group.getId(), node);
             for(int article : group.getArticles()){
@@ -29,7 +31,7 @@ public class ClassifierTreeTableModel extends AbstractTreeTableModel{
         }
 
         for (ClassifierNode node : nodes.values()) {
-            Classificator group = groups.get(node.getId());
+            Group group = groups.get(node.getId());
             if (group.getParentId() == 0) {
                 rootNode = node;
             } else {

@@ -57,4 +57,19 @@ public class Article {
     public void setComment(String comment) {
         this.comment = comment;
     }    
+    
+    
+    @Override
+    public Article clone() {
+        Article article = new Article();
+        article.id = this.id;
+        article.fullName = this.fullName;
+        article.shortName = this.shortName;
+        article.classificationId = this.classificationId;
+        article.comment = this.comment;
+        article.description = this.description;
+        return article;
+    }
+    
+    
 }
