@@ -20,7 +20,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import ru.sirius.distributor.db.NomenclatureHelper;
-import ru.sirius.distributor.model.Classificator;
+import ru.sirius.distributor.model.Group;
 
 /**
  *
@@ -45,7 +45,7 @@ public class NomenclatureFrame extends javax.swing.JInternalFrame {
         int rootIndex = 0;
         Map<Integer, DefaultMutableTreeNode> nodes = new HashMap<>();
 
-        for (Classificator classification : NomenclatureHelper.getGROUPS().values()) {
+        for (Group classification : NomenclatureHelper.getGROUPS().values()) {
 
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(classification);
             node.setAllowsChildren(true);
@@ -53,7 +53,7 @@ public class NomenclatureFrame extends javax.swing.JInternalFrame {
         }
 
         for (DefaultMutableTreeNode node : nodes.values()) {
-            Classificator classification = (Classificator) node.getUserObject();
+            Group classification = (Group) node.getUserObject();
             if (classification.getParentId() == 0) {
                 rootIndex = classification.getId();
             } else {
@@ -155,7 +155,7 @@ public class NomenclatureFrame extends javax.swing.JInternalFrame {
         Enumeration<DefaultMutableTreeNode> enumeration = currentNode.depthFirstEnumeration();
         while (enumeration.hasMoreElements()) {
             DefaultMutableTreeNode node = enumeration.nextElement();
-            Classificator classification = (Classificator) node.getUserObject();
+            Group classification = (Group) node.getUserObject();
             set.add(classification.getId());
         }
         int t = 100;

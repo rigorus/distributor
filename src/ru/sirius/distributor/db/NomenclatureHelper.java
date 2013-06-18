@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.sirius.distributor.model.Article;
-import ru.sirius.distributor.model.Classificator;
+import ru.sirius.distributor.model.Group;
 import ru.sirius.distributor.model.ClassifierNode;
 import ru.sirius.distributor.model.SelectedNode;
 
 public class NomenclatureHelper {
 
     private static final Map<Integer, Article> ARTICLES;
-    private static final Map<Integer, Classificator> GROUPS;
+    private static final Map<Integer, Group> GROUPS;
 
     static {
 
@@ -49,7 +49,7 @@ public class NomenclatureHelper {
                 ResultSet rs = statement.executeQuery("SELECT * FROM nomenclature.classification")) {
 
             while (rs.next()) {
-                Classificator classification = new Classificator();
+                Group classification = new Group();
                 int classificationId = rs.getInt("classification_id");
                 classification.setId(classificationId);
                 classification.setParentId(rs.getInt("parent_id"));
@@ -74,7 +74,7 @@ public class NomenclatureHelper {
         return ARTICLES;
     }
 
-    public static Map<Integer, Classificator> getGROUPS() {
+    public static Map<Integer, Group> getGROUPS() {
         return GROUPS;
     }
     private static ClassifierNode GroupRootNode;
@@ -83,7 +83,7 @@ public class NomenclatureHelper {
 
         Map<Integer, ClassifierNode> nodes = new HashMap<>();
 
-        for (Classificator group : GROUPS.values()) {
+        for (Group group : GROUPS.values()) {
             ClassifierNode node = new ClassifierNode(ClassifierNode.NodeType.GROUP, group.getId());
             nodes.put(group.getId(), node);
 //            for (int article : group.getArticles()) {
@@ -92,7 +92,7 @@ public class NomenclatureHelper {
         }
 
         for (ClassifierNode node : nodes.values()) {
-            Classificator group = GROUPS.get(node.getId());
+            Group group = GROUPS.get(node.getId());
             if (group.getParentId() == 0) {
                 GroupRootNode = node;
             } else {
@@ -108,7 +108,7 @@ public class NomenclatureHelper {
 
     public static SelectedNode getSelectedRootNode() {
 
-        for (Classificator group : GROUPS.values()) {
+        for (Group group : GROUPS.values()) {
             if (!group.hasParent()) {
                 return new SelectedNode(ClassifierNode.NodeType.GROUP, group.getId(), null);
             }

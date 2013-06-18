@@ -7,5 +7,16 @@ package ru.sirius.distributor.model.nomenclature;
 
 
 public class NmTreeBuilder {
+    
+    private NomenclatureTreePrototype prototype;
+
+    public NmTreeBuilder(NomenclatureTreePrototype prototype) {
+        this.prototype = prototype;
+    }
+
+    
+    public  
+    
+    
 
 }

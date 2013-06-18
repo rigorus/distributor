@@ -2,7 +2,7 @@ package ru.sirius.distributor.model.nomenclature;
 
 import java.util.Map;
 import ru.sirius.distributor.db.NomenclatureHelper;
-import ru.sirius.distributor.model.Classificator;
+import ru.sirius.distributor.model.Group;
 
 //TODO предполагается копировать каждый раз с оригинала
 // Реализовать два интерфейса один для изменения другой для работы
@@ -13,7 +13,7 @@ public class NmSimpleTree {
 
     private NmSimpleTree() {
 
-        for (Classificator group : NomenclatureHelper.getGROUPS().values()) {
+        for (Group group : NomenclatureHelper.getGROUPS().values()) {
             NmSimpleNode node = new NmSimpleNode(NmNode.NodeType.GROUP, group.getId());
             nodes.put(group.getId(), node);
             for (int article : group.getArticles()) {
@@ -22,7 +22,7 @@ public class NmSimpleTree {
         }
 
         for (NmSimpleNode node : nodes.values()) {
-            Classificator group = NomenclatureHelper.getGROUPS().get(node.getId());
+            Group group = NomenclatureHelper.getGROUPS().get(node.getId());
             if (group.getParentId() == 0) {
                 root = node;
             } else {

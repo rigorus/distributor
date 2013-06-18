@@ -10,7 +10,7 @@
 --     short_name varchar(500),
 --     description varchar(4000),
 --     comment varchar(2000),
---     constraint acticle__uk unique key (article_id, classification_id),
+--     constraint acticle__uk unique key (full_name),
 --     constraint acticle__classification__fk foreign key (classification_id) references nomenclature.classification(classification_id)
 -- );
 

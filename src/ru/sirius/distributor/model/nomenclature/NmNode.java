@@ -4,18 +4,14 @@
  */
 package ru.sirius.distributor.model.nomenclature;
 
-import java.util.Enumeration;
+import javax.swing.tree.TreeNode;
 
 
-public interface NmNode {
+public interface NmNode extends TreeNode {
     
     enum NodeType { GROUP, ARTICLE};
     
     NodeType getType();
     
-    int getId();
-       
-    NmNode getParent();
-    
-    Enumeration<NmNode> getChildren();        
+    int getId();           
 }
