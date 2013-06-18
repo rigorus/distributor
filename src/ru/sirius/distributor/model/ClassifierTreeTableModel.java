@@ -17,7 +17,7 @@ public class ClassifierTreeTableModel extends AbstractTreeTableModel{
     public ClassifierTreeTableModel() {        
 
         this.articles = NomenclatureHelper.getARTICLES();
-        this.groups = NomenclatureHelper.getCLASSIFICATIONS();        
+        this.groups = NomenclatureHelper.getGROUPS();        
 
         for (Classificator group : groups.values()) {
             ClassifierNode node = new ClassifierNode(ClassifierNode.NodeType.GROUP, group.getId());
