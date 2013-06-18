@@ -6,13 +6,20 @@
 package ru.sirius.distributor.model.nomenclature;
 
 
-import java.util.List;
 import java.util.Map;
 import ru.sirius.distributor.model.Article;
 import ru.sirius.distributor.model.Group;
 
 //Отсюда идет вся информация об артиклах и группах !!!
-public interface NomenclatureTreePrototype {
+public interface NmTreePrototype {
+
+    public Map<Integer,Group> getGroups();
+
+    public Map<Integer, Article> getArticles();
     
+    public Group getGroup(int id);
+
+    public Article getArticle(int id);
+
 
 }

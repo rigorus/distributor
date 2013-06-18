@@ -2,32 +2,39 @@ package ru.sirius.distributor.ui;
 
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import ru.sirius.distributor.db.NomenclatureHelper;
-import ru.sirius.distributor.model.ClassifierNode;
-import ru.sirius.distributor.model.ClassifierTreeTableModel;
+import ru.sirius.distributor.model.nomenclature.NmTreeTableModel;
+import ru.sirius.distributor.model.nomenclature.NmNode;
+import ru.sirius.distributor.model.nomenclature.NmTreeBuilder;
+import ru.sirius.distributor.service.NomenclatureService;
 
-public class ArticleChooser extends javax.swing.JDialog {
+public class ArticleChooser extends JDialog {
 
-    private TreeModel model;
-    private TreeModel selectionTreeModel;
-    private ClassifierTreeTableModel treeTableModel;
+    private TreeModel groupModel;
+    private TreeModel selectionModel;
+    private NmTreeTableModel complexModel;
 
+    private final NmTreeBuilder builder;
+    
     /**
      * Creates new form ArticleChooser
      */
     public ArticleChooser(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);        
-        this.treeTableModel = new ClassifierTreeTableModel();
-        this.model = new DefaultTreeModel(NomenclatureHelper.getGroupRootNode());
-        this.selectionTreeModel = new DefaultTreeModel(NomenclatureHelper.getSelectedRootNode());
-        initComponents();
-        classifierTreeTable.setTreeTableModel(treeTableModel);
         
+        super(parent, modal);                
+        builder = new NmTreeBuilder(NomenclatureService.getInstance().getPrototype());
+        
+        groupModel = new DefaultTreeModel(builder.buildGroupTree());        
+        complexModel = new NmTreeTableModel(builder.buidComplexTree());
+        selectionModel = new DefaultTreeModel(builder.buidSelectionTree());
+                
+        initComponents();
+        classifierTreeTable.setTreeTableModel(complexModel);
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
         renderer.setLeafIcon(new ImageIcon(getClass().getResource("resource/folder_close_16.png")));
         renderer.setOpenIcon(new ImageIcon(getClass().getResource("/ru/sirius/distributor/ui/resource/folder_open_16.png")));
@@ -62,7 +69,7 @@ public class ArticleChooser extends javax.swing.JDialog {
 
         classifierSplitPane.setToolTipText("");
 
-        groupTree.setModel(model);
+        groupTree.setModel(groupModel);
         groupTree.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         groupTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
@@ -86,7 +93,7 @@ public class ArticleChooser extends javax.swing.JDialog {
 
         chooserSplitPane.setLeftComponent(classifierSplitPane);
 
-        selectionTree.setModel(selectionTreeModel);
+        selectionTree.setModel(selectionModel);
         jScrollPane2.setViewportView(selectionTree);
 
         chooserSplitPane.setRightComponent(jScrollPane2);
@@ -154,9 +161,10 @@ public class ArticleChooser extends javax.swing.JDialog {
     }//GEN-LAST:event_classifierToggleButtonActionPerformed
 
     private void groupTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_groupTreeValueChanged
-        ClassifierNode node = (ClassifierNode) evt.getNewLeadSelectionPath().getLastPathComponent();
-        treeTableModel.setRoot(node.getId());
-        classifierTreeTable.setTreeTableModel(treeTableModel);
+        
+        NmNode node = (NmNode) evt.getNewLeadSelectionPath().getLastPathComponent();
+        complexModel.setRoot(node);
+        classifierTreeTable.setTreeTableModel(complexModel);
         classifierTreeTable.updateUI();
     }//GEN-LAST:event_groupTreeValueChanged
 
@@ -166,14 +174,11 @@ public class ArticleChooser extends javax.swing.JDialog {
         if (clickCount == 2 && button == MouseEvent.BUTTON1 && classifierTreeTable.getSelectedRow() != -1) {
             int rowIndex = classifierTreeTable.getSelectedRow();
             TreePath path = classifierTreeTable.getPathForRow(rowIndex);
-            ClassifierNode node = (ClassifierNode)path.getLastPathComponent();  
-            addToSelectedTree(node);
+            NmNode node = (NmNode)path.getLastPathComponent();  
+            builder.mergeSelectionTree((NmNode)selectionModel.getRoot(),node);
+            selectionTree.updateUI();
         }
     }//GEN-LAST:event_classifierTreeTableMouseClicked
-
-    private void addToSelectedTree(ClassifierNode node){
-                
-    }
     
     /**
      * @param args the command line arguments

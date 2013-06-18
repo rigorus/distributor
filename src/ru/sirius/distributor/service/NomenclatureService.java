@@ -4,7 +4,10 @@
  */
 package ru.sirius.distributor.service;
 
-import ru.sirius.distributor.model.nomenclature.NomenclatureTreePrototype;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import ru.sirius.distributor.model.nomenclature.NmTreePrototype;
 import java.util.List;
 import java.util.Map;
 import ru.sirius.distributor.db.NomenclatureProvider;
@@ -35,10 +38,10 @@ public class NomenclatureService {
     }
     
     
-    public NomenclatureTreePrototype getPrototype(){
+    public NmTreePrototype getPrototype(){
         
         synchronized(this){
-            if( prototype.version == version) return prototype;              
+            if(prototype != null && prototype.version == version) return prototype;              
             prototype = new NomenclatureTreePrototypeImp(articles, groups, version);
         }
         
@@ -48,7 +51,7 @@ public class NomenclatureService {
     }
     
     
-    private static class NomenclatureTreePrototypeImp implements NomenclatureTreePrototype{
+    private static class NomenclatureTreePrototypeImp implements NmTreePrototype{
 
         private Map<Integer, Article> articles;
         private Map<Integer, Group> groups;
@@ -57,6 +60,8 @@ public class NomenclatureService {
         private NomenclatureTreePrototypeImp(List<Article> articles, List<Group> groups, long version ) {
         
             this.version = version;            
+            this.articles = new HashMap<>();
+            this.groups = new HashMap<>();
             
             for (Article article : articles) {
                 this.articles.put(article.getId(), article.clone());
@@ -69,12 +74,32 @@ public class NomenclatureService {
 
         private void makeTree() {
             // Здесь уже создается само дерево !!! !!! !!!
-            
-            
         }
+
         
         
         // реализация самих методов интерфейса !!!
+        
+        //лучше переделать на enumenator + доступ к отдельной группе
 
+        @Override
+        public Map<Integer, Group> getGroups() {
+            return Collections.unmodifiableMap(groups);
+        }
+
+        @Override
+        public Map<Integer, Article> getArticles() {
+            return articles;
+        }
+        
+        @Override
+        public Group getGroup(int id) {
+            return groups.get(id);
+        }
+
+        @Override
+        public Article getArticle(int id) {
+            return articles.get(id);
+        }        
     }
 }

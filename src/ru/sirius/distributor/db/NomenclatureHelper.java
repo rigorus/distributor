@@ -13,8 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.sirius.distributor.model.Article;
 import ru.sirius.distributor.model.Group;
-import ru.sirius.distributor.model.ClassifierNode;
-import ru.sirius.distributor.model.SelectedNode;
 
 public class NomenclatureHelper {
 
@@ -61,7 +59,7 @@ public class NomenclatureHelper {
                         articles.add(article.getId());
                     }
                 }
-                classification.setArticles(articles);
+             //   classification.setArticles(articles);
                 GROUPS.put(classificationId, classification);
             }
 
@@ -77,46 +75,7 @@ public class NomenclatureHelper {
     public static Map<Integer, Group> getGROUPS() {
         return GROUPS;
     }
-    private static ClassifierNode GroupRootNode;
-
-    static {
-
-        Map<Integer, ClassifierNode> nodes = new HashMap<>();
-
-        for (Group group : GROUPS.values()) {
-            ClassifierNode node = new ClassifierNode(ClassifierNode.NodeType.GROUP, group.getId());
-            nodes.put(group.getId(), node);
-//            for (int article : group.getArticles()) {
-//                node.addChild(new ClassifierNode(ClassifierNode.NodeType.ARTICLE, article));
-//            }
-        }
-
-        for (ClassifierNode node : nodes.values()) {
-            Group group = GROUPS.get(node.getId());
-            if (group.getParentId() == 0) {
-                GroupRootNode = node;
-            } else {
-                node.setParent(nodes.get(group.getParentId()));
-                nodes.get(group.getParentId()).addChild(node);
-            }
-        }
-    }
-
-    public static ClassifierNode getGroupRootNode() {
-        return GroupRootNode;
-    }
-
-    public static SelectedNode getSelectedRootNode() {
-
-        for (Group group : GROUPS.values()) {
-            if (!group.hasParent()) {
-                return new SelectedNode(ClassifierNode.NodeType.GROUP, group.getId(), null);
-            }
-        }
-
-        return null;
-    }
-
+ 
     public static void main(String[] args) throws SQLException {
 
         fillArticleClassification(1, 40, 2);

@@ -144,10 +144,11 @@ public class DistributorApplication extends javax.swing.JFrame {
 
     private void nomenclatureMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomenclatureMenuItemActionPerformed
      
-        JInternalFrame frame = new NomenclatureFrame();        
-        frame.setFrameIcon(new ImageIcon("resource/green_book.png"));
-        frame.setVisible(true);        
-        desktopPane.add(frame);
+        ArticleChooser chooser = new ArticleChooser(this, rootPaneCheckingEnabled);
+        
+//        chooser.(new ImageIcon("resource/green_book.png"));
+        chooser.setVisible(true);        
+        desktopPane.add(chooser);
     }//GEN-LAST:event_nomenclatureMenuItemActionPerformed
 
 
