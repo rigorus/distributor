@@ -45,7 +45,7 @@ public class NomenclatureFrame extends javax.swing.JInternalFrame {
         int rootIndex = 0;
         Map<Integer, DefaultMutableTreeNode> nodes = new HashMap<>();
 
-        for (Classificator classification : NomenclatureHelper.getCLASSIFICATIONS().values()) {
+        for (Classificator classification : NomenclatureHelper.getGROUPS().values()) {
 
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(classification);
             node.setAllowsChildren(true);

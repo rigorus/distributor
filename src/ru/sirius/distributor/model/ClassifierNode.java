@@ -157,7 +157,7 @@ public class ClassifierNode implements TreeNode {
     public String toString() {
         return nodeType == NodeType.ARTICLE
                 ? NomenclatureHelper.getARTICLES().get(id).getFullName()
-                : NomenclatureHelper.getCLASSIFICATIONS().get(id).getName();
+                : NomenclatureHelper.getGROUPS().get(id).getName();
     }
 
     public void setParent(ClassifierNode parent) {
